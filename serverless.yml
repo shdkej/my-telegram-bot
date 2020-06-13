@@ -1,0 +1,46 @@
+service: my-telegram-bot
+# app and org for use with dashboard.serverless.com
+app: test
+org: shdkej
+
+provider:
+  name: aws
+  runtime: python3.6
+  stage: dev
+  region: eu-central-1
+
+# you can add statements to the Lambda function's IAM Role here
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+        - "sqs:SendMessage"
+        - "sqs:GetQueueUrl"
+        - "sqs:ListQueue"
+      Resource:
+        Fn::GetAtt: [ SQSQueue, Arn ]
+
+# you can define service wide environment variables here
+  environment:
+    TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+    TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+
+functions:
+  hello:
+    handler: handler.hello
+#    The following are a few example events you can configure
+#    NOTE: Please make sure to change your handler code to work with those events
+#    Check the event documentation for details
+    events:
+      - http:
+          path: send-telegram
+          method: post
+          cors: true
+      - sqs:
+          arn:
+            Fn::GetAtt: [ SQSQueue, Arn ]
+resources:
+  Resources:
+    SQSQueue:
+      Type: "AWS::SQS::Queue"
+      Properties:
+        QueueName: "MyQueue"
