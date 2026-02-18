@@ -8,11 +8,13 @@ jobs:
     name: deploy
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@master
-    - name: serverless deploy
-      uses: serverless/github-action@v3
+    - uses: actions/checkout@v4
+    - uses: actions/setup-node@v4
       with:
-        args: deploy
+        node-version: '18'
+    - run: npm install -g serverless@3
+    - name: serverless deploy
+      run: serverless deploy
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
