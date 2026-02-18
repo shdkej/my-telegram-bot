@@ -66,5 +66,5 @@ def send_message(message):
         for m in message:
             strMessage += m
             strMessage += "\n"
-    data = {"text": strMessage.encode("utf8"), "chat_id": CHAT_ID}
+    data = {"text": strMessage.encode("utf8"), "chat_id": CHAT_ID, "parse_mode": "Markdown"}
     requests.post(url, data)

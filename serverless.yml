@@ -1,11 +1,8 @@
 service: my-telegram-bot
-# app and org for use with dashboard.serverless.com
-app: test
-org: shdkej
 
 provider:
   name: aws
-  runtime: python3.6
+  runtime: python3.8
   stage: dev
   region: eu-central-1
 
