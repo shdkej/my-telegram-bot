@@ -1,7 +1,7 @@
 #-*- coding:utf-8 -*-
 import json
 import os
-from botocore.vendored import requests
+from urllib import request, parse
 import logging
 
 CHAT_ID = os.environ['TELEGRAM_CHAT_ID']
@@ -66,5 +66,5 @@ def send_message(message):
         for m in message:
             strMessage += m
             strMessage += "\n"
-    data = {"text": strMessage.encode("utf8"), "chat_id": CHAT_ID, "parse_mode": "Markdown"}
-    requests.post(url, data)
+    data = parse.urlencode({"text": strMessage, "chat_id": CHAT_ID, "parse_mode": "Markdown"}).encode("utf-8")
+    request.urlopen(url, data)
